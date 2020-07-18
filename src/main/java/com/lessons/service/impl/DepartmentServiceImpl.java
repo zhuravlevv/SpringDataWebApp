@@ -28,7 +28,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             return departmentDao.findById(id).orElseThrow(Exception::new);
         }
         catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Department with id = " + id + " doesn't exist");
         }
         return null;
     }
@@ -40,8 +40,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department update(Department newDepartment, Integer id) {
         Department department = getById(id);
         department.setName(newDepartment.getName());
-        newDepartment.getEmployees().forEach(department::addEmployee);
-        return department;
+        if(newDepartment.getEmployees()!=null)
+            newDepartment.getEmployees().forEach(department::addEmployee);
+        return departmentDao.save(department);
     }
 
     public void delete(Integer id) {

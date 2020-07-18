@@ -29,7 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return employeeDao.findById(id).orElseThrow(Exception::new);
         }
         catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Employee with id = " + id + " doesn't exist");
         }
         return null;
     }
@@ -45,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setDepartment(newEmployee.getDepartment());
         employee.setSalary(newEmployee.getSalary());
         employee.setName(newEmployee.getName());
-        return employee;
+        return employeeDao.save(employee);
     }
 
     @Override

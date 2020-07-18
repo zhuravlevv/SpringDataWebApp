@@ -8,7 +8,7 @@ public interface DepartmentService {
 
     public List<Department> getAll();
 
-    public Department getById(Integer id) throws Exception;
+    public Department getById(Integer id);
 
     public Department create(Department department);
 
