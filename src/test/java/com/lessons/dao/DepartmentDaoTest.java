@@ -34,16 +34,16 @@ public class DepartmentDaoTest {
         Department department = new Department();
         department.setName("dep");
         Department department1 = departmentDao.save(department);
-        assertNotNull(department1);
+        assertNotNull(department1.getId());
     }
-    
+
     @Test
     public void getById(){
         Department department = new Department();
         department.setName("dep1");
         Department department1 = departmentDao.save(department);
         Department department2 = departmentDao.findById(department1.getId()).orElseGet(null);
-        assertEquals("dep1", department1.getName());
+        assertEquals("dep1", department2.getName());
     }
 
     @Test
