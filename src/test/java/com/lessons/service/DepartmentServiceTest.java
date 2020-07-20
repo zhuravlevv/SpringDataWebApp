@@ -1,8 +1,10 @@
 package com.lessons.service;
 
 import com.lessons.dao.DepartmentDao;
+import com.lessons.dto.DepartmentDto;
 import com.lessons.entity.Department;
 import com.lessons.service.impl.DepartmentServiceImpl;
+import com.lessons.service.mapper.DepartmentMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +27,9 @@ public class DepartmentServiceTest {
     @Mock
     private DepartmentDao departmentDao;
 
+    @Mock
+    private DepartmentMapper departmentMapper;
+
     @InjectMocks
     private DepartmentServiceImpl departmentService;
 
@@ -34,9 +39,11 @@ public class DepartmentServiceTest {
         List<Department> info = new ArrayList<>();
         info.add(department);
 
+        DepartmentDto departmentDto = new DepartmentDto();
+        when(departmentMapper.toDto(any(Department.class))).thenReturn(departmentDto);
         when(departmentDao.findAll()).thenReturn(info);
 
-        List<Department> departments = departmentService.getAll();
+        List<DepartmentDto> departments = departmentService.getAll();
 
         assertNotNull(departments);
         assertEquals(1, departments.size());
@@ -46,10 +53,13 @@ public class DepartmentServiceTest {
     public void getById(){
         Department department = new Department();
         department.setName("depGetById");
+        DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.setName(department.getName());
 
         when(departmentDao.findById(any(Integer.class))).thenReturn(Optional.of(department));
+        when(departmentMapper.toDto(any(Department.class))).thenReturn(departmentDto);
 
-        Department department1 = departmentService.getById(1);
+        DepartmentDto department1 = departmentService.getById(1);
 
         assertEquals("depGetById", department1.getName());
     }
@@ -58,28 +68,15 @@ public class DepartmentServiceTest {
     public void create(){
         Department department = new Department();
         department.setName("depCreate");
+        DepartmentDto departmentDto = new DepartmentDto();
+        departmentDto.setName("depCreate");
 
         when(departmentDao.save(any(Department.class))).thenReturn(department);
+        when(departmentMapper.fromDto(any(DepartmentDto.class))).thenReturn(department);
+        when(departmentMapper.toDto(any(Department.class))).thenReturn(departmentDto);
 
-        Department department1 = departmentService.create(department);
+        DepartmentDto department1 = departmentService.create(departmentDto);
 
-        assertEquals(department, department1);
-    }
-
-    @Test
-    public void update(){
-        Department department1 = new Department();
-        department1.setName("dep1");
-        department1.setId(1);
-
-        Department department2 = new Department();
-        department2.setName("dep2");
-
-        when(departmentDao.findById(1)).thenReturn(Optional.of(department1));
-        when(departmentDao.save(any(Department.class))).thenReturn(department2);
-
-        Department department3 = departmentService.update(department2, 1);
-
-        assertEquals(department2.getName(), department3.getName());
+        assertEquals(department.getName(), department1.getName());
     }
 }
