@@ -27,10 +27,10 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "salary")
     private BigDecimal salary;
 
     @ManyToOne(fetch = FetchType.LAZY)
