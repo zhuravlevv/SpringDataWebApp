@@ -1,18 +1,19 @@
 package com.lessons.service;
 
+import com.lessons.dto.DepartmentDto;
 import com.lessons.entity.Department;
 
 import java.util.List;
 
 public interface DepartmentService {
 
-    public List<Department> getAll();
+    public List<DepartmentDto> getAll();
 
-    public Department getById(Integer id);
+    public DepartmentDto getById(Integer id);
 
-    public Department create(Department department);
+    public DepartmentDto create(DepartmentDto department);
 
-    public Department update(Department newDepartment, Integer id);
+    public DepartmentDto update(DepartmentDto newDepartment, Integer id);
 
     public void delete(Integer id);
 }
