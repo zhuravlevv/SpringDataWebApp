@@ -17,15 +17,23 @@ import java.util.Objects;
 @Table(name = "employee")
 public class Employee {
 
+    public Employee(String name, BigDecimal salary, Department department) {
+        this.name = name;
+        this.salary = salary;
+        this.department = department;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column
     private String name;
 
+    @Column
     private BigDecimal salary;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 

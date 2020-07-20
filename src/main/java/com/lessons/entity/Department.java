@@ -9,21 +9,28 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "department")
+@Entity
 public class Department {
+
+    public Department(String name, Set<Employee> employees) {
+        this.name = name;
+        this.employees = employees;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column
     private String name;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @Transient
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Employee> employees;
 
     public void addEmployee(Employee employee){

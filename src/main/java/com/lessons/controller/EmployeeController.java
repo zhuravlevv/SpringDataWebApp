@@ -1,15 +1,11 @@
 package com.lessons.controller;
 
-import com.lessons.entity.Department;
-import com.lessons.entity.Employee;
+import com.lessons.dto.EmployeeDto;
 import com.lessons.service.EmployeeService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.REException;
 
-import javax.xml.ws.Service;
 import java.net.URI;
 import java.util.List;
 
@@ -23,42 +19,42 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employee")
-    public ResponseEntity<List<Employee>> getAll(){
-        List<Employee> employees = employeeService.getAll();
+    @GetMapping("employee")
+    public ResponseEntity<List<EmployeeDto>> getAll(){
+        List<EmployeeDto> employees = employeeService.getAll();
         if(employees == null)
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> getById(@PathVariable Integer id){
+    @GetMapping("employee/{id}")
+    public ResponseEntity<EmployeeDto> getById(@PathVariable Integer id){
         if(id == null)
             return ResponseEntity.badRequest().body(null);
-        Employee employee = employeeService.getById(id);
+        EmployeeDto employee = employeeService.getById(id);
         if(employee == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(employee);
     }
 
-    @PostMapping("/employee")
-    public ResponseEntity<Employee> create(@RequestBody Employee newEmployee){
+    @PostMapping("employee")
+    public ResponseEntity<EmployeeDto> create(@RequestBody EmployeeDto newEmployee){
         if(newEmployee == null)
             return ResponseEntity.badRequest().body(null);
-        Employee employee = employeeService.create(newEmployee);
+        EmployeeDto employee = employeeService.create(newEmployee);
         return ResponseEntity.created(URI.create("/employee/" + employee.getId()))
                 .body(employee);
     }
 
-    @PutMapping("/employee/{id}")
-    public ResponseEntity<Employee> update(@PathVariable Integer id, @RequestBody Employee newEmployee){
+    @PutMapping("employee/{id}")
+    public ResponseEntity<EmployeeDto> update(@PathVariable Integer id, @RequestBody EmployeeDto newEmployee){
         if(id == null || newEmployee == null)
             return ResponseEntity.badRequest().body(null);
         return ResponseEntity.ok(employeeService.update(newEmployee, id));
     }
 
-    @DeleteMapping("/employee/{id}")
-    public ResponseEntity<Employee> delete(@PathVariable Integer id){
+    @DeleteMapping("employee/{id}")
+    public ResponseEntity<EmployeeDto> delete(@PathVariable Integer id){
         employeeService.delete(id);
         return ResponseEntity.noContent().build();
     }
